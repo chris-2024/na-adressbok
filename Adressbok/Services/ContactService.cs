@@ -1,5 +1,6 @@
 ﻿using Adressbok.Interfaces;
 using Adressbok.Models;
+using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,19 +12,21 @@ namespace Adressbok.Services
 {
     internal class ContactService : IContactService
     {
-        //private readonly IFileService<ContactModel> _fileService;
+        private readonly IFileService<ContactModel> _fileService;
         private readonly List<ContactModel> _contacts;
 
         public ContactService()
         {
-            //_fileService = new FileService<ContactModel>("Contacts");
-            //_contacts = new(_fileService.ReadFromFile());
-            _contacts = new List<ContactModel>() 
-            {
-                new ContactModel() { FirstName = "Bert", Email = "bert@anka.se" },
-                new ContactModel() { FirstName = "Ketchup", Email = "ketchup@tomato.co.uk" },
-                new ContactModel() { LastName = "Svanslös", Email = "svans@mail.com" }
-            };
+            _fileService = new FileService<ContactModel>("Contacts");
+            _contacts = new(_fileService.ReadFromFile());
+
+            //AddContact(new ContactModel() { FirstName = "Bert", Email = "bert@anka.se" });
+            //AddContact(new ContactModel() { FirstName = "Ketchup", Email = "ketchup@tomato.co.uk" });
+            //AddContact(new ContactModel() { FirstName = "Svanslös", Email = "svans@mail.com" });
+
+            //RemoveContact("bert@anka.se");
+
+            UpdateContacts();
         }
 
         public bool AddContact(ContactModel contact)
@@ -89,7 +92,7 @@ namespace Adressbok.Services
 
         private void UpdateContacts()
         {
-            //_fileService.WriteToFile(_contacts.ToList());
+            _fileService.WriteToFile(_contacts.ToList());
         }
     }
 }
