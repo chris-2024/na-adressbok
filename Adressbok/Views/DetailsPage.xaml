@@ -5,17 +5,24 @@
              x:DataType="viewmodels:DetailsViewModel"
              x:Class="Adressbok.Views.DetailsPage">
 
-    <Grid RowDefinitions="*, auto" Padding="30" RowSpacing="20">
-        <Grid Grid.Row="0" RowDefinitions="auto,auto" ColumnDefinitions="auto,auto" ColumnSpacing="5">
-            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Contact.FirstName}" />
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Contact.LastName}" />
-            <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Contact.Email}" />
-        </Grid>
+    <Grid RowDefinitions="auto, 4*, auto" ColumnDefinitions="1*, 5*, 1*" Padding="20" RowSpacing="30">
+        <Label Grid.Column="1" Text="{Binding Contact, Converter={StaticResource DisplayNameConverter}}" TextTransform="Uppercase" FontSize="22" TextColor="Gray" HorizontalOptions="CenterAndExpand"/>
+        <StackLayout Grid.Row="1" Grid.Column="1" VerticalOptions="FillAndExpand">
+            <Label Text="Email" FontSize="14" TextColor="Gray"/>
+            <Label Text="{Binding Contact.Email}" FontSize="18" />
 
-        <HorizontalStackLayout Grid.Row="1" Padding="20">
-            <Button Text="Return" Command="{Binding ReturnCommand}" Margin="5"/>
-            <Button Text="Delete" Command="{Binding RemoveContactCommand}" Margin="5"/>
-        </HorizontalStackLayout>
+            <Label Text="Phone Number" FontSize="14" TextColor="Gray" Margin="0, 20, 0, 0"/>
+            <Label Text="{Binding Contact.PhoneNumber}" FontSize="18" />
+
+            <Label Text="Address" FontSize="14" TextColor="Gray" Margin="0, 20, 0, 0"/>
+            <Label Text="{Binding Contact.Address}" FontSize="18" />
+
+            <Button Text="Edit" Command="{Binding GoToEditCommand}" BackgroundColor="Transparent" BorderWidth="0" Margin="10, 20" TextColor="Gray"/>
+        </StackLayout>
+        <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="auto, *, auto" Margin="20, 5">
+            <Button Text="Return" Command="{Binding ReturnCommand}" Margin="10" />
+            <Button Grid.Column="2" Text="Remove" Command="{Binding RemoveContactCommand}" Margin="10" />
+        </Grid>
     </Grid>
 
 </ContentPage>

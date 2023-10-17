@@ -14,10 +14,10 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<ContactModel> contacts;
 
-    public MainViewModel() 
+    public MainViewModel(ContactService contactService) 
     {
-        _contactService = new ContactService();
-        contacts = _contactService.GetAllContacts() ?? new();
+        _contactService = contactService;
+        contacts = new(_contactService.GetAllContacts());
     }
 
     [RelayCommand]

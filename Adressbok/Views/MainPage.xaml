@@ -6,13 +6,14 @@
              x:DataType="{x:Type viewmodels:MainViewModel}"
              x:Class="Adressbok.Views.MainPage">
 
-    <Grid RowDefinitions="auto,*" Padding="30" RowSpacing="20">
-        <CollectionView Grid.Row="0" ItemsSource="{Binding Contacts}">
+    <Grid RowDefinitions="auto,*,auto" ColumnDefinitions="1*, 4*, 1*" Padding="20" RowSpacing="30">
+        <Label Grid.Column="1" Text="Contacs" FontSize="18" TextColor="Gray" HorizontalOptions="CenterAndExpand"/>
+        <CollectionView Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Contacts}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type models:ContactModel}">
                     <Grid Padding="5">
                         <StackLayout Margin="10,0,0,0">
-                            <Label Text="{Binding FirstName}" FontSize="16" FontAttributes="Bold" />
+                            <Label Text="{Binding FirstName}" FontSize="18" FontAttributes="Bold" />
                             <Label Text="{Binding Email}" FontSize="12" TextColor="Gray" />
                         </StackLayout>
 

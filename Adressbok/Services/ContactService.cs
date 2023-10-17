@@ -5,19 +5,22 @@ using System.Collections.Specialized;
 
 namespace Adressbok.Services;
 
-internal class ContactService : IContactService
+public class ContactService : IContactService
 {
     private readonly IFileService<ContactModel> _fileService;
-    private ObservableCollection<ContactModel> contacts;
+    private readonly ObservableCollection<ContactModel> contacts;
 
     public ContactService()
     {
         _fileService = new FileService<ContactModel>("Contacts");
         contacts = new(_fileService.ReadFromFile());
         contacts.CollectionChanged += UpdateContacts;
+        FillContacs();
     }
 
     private void UpdateContacts(object sender, NotifyCollectionChangedEventArgs e) => _fileService.WriteToFile(contacts.ToList());
+
+    public ObservableCollection<ContactModel> GetAllContacts() => contacts;
 
     public bool AddContact(ContactModel contact)
     {
@@ -29,8 +32,6 @@ internal class ContactService : IContactService
 
         return true;
     }
-
-    public ObservableCollection<ContactModel> GetAllContacts() => contacts;
 
     public ContactModel GetContact(Guid id)
     {
@@ -74,5 +75,16 @@ internal class ContactService : IContactService
 
         contacts.Remove(contact);
         return true;
+    }
+
+    private void FillContacs()
+    {
+        if (contacts.Count > 0) return;
+
+        contacts.Add(new ContactModel() { FirstName = "John", LastName = "Doe", Email = "johndoe@example.com", PhoneNumber = "123-456-7890", Address = "123 Main St" });
+        contacts.Add(new ContactModel() { LastName = "Smith", Email = "alice@example.com", PhoneNumber = "987-654-3210" });
+        contacts.Add(new ContactModel() { FirstName = "Bob", Email = "bob@example.com", PhoneNumber = "555-123-7890", Address = "789 Oak St" });
+        contacts.Add(new ContactModel() { FirstName = "Sarah", LastName = "Brown", Email = "sarah@example.com", Address = "101 Pine St" });
+        contacts.Add(new ContactModel() { Email = "michael@example.com" });
     }
 }
