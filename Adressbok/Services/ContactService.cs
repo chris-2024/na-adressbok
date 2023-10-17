@@ -12,10 +12,10 @@ public class ContactService : IContactService
 
     public ContactService()
     {
-        _fileService = new FileService<ContactModel>("Contacts");
+        _fileService = new FileService<ContactModel>("Adressbok_Kontakter");
         contacts = new(_fileService.ReadFromFile());
         contacts.CollectionChanged += UpdateContacts;
-        FillContacs();
+        ContactsSeeder();
     }
 
     private void UpdateContacts(object sender, NotifyCollectionChangedEventArgs e) => _fileService.WriteToFile(contacts.ToList());
@@ -77,7 +77,7 @@ public class ContactService : IContactService
         return true;
     }
 
-    private void FillContacs()
+    private void ContactsSeeder()
     {
         if (contacts.Count > 0) return;
 
@@ -86,5 +86,10 @@ public class ContactService : IContactService
         contacts.Add(new ContactModel() { FirstName = "Bob", Email = "bob@example.com", PhoneNumber = "555-123-7890", Address = "789 Oak St" });
         contacts.Add(new ContactModel() { FirstName = "Sarah", LastName = "Brown", Email = "sarah@example.com", Address = "101 Pine St" });
         contacts.Add(new ContactModel() { Email = "michael@example.com" });
+        contacts.Add(new ContactModel() { FirstName = "Alice", Email = "alice.j@example.com", Address = "123 Elm St" });
+        contacts.Add(new ContactModel() { LastName = "David", Email = "david@example.com", PhoneNumber = "555-123-4567" });
+        contacts.Add(new ContactModel() { FirstName = "Jennifer", Email = "jennifer@example.com" });
+        contacts.Add(new ContactModel() { FirstName = "Michael", LastName = "Johnson", Email = "michael.j@example.com" });
+        contacts.Add(new ContactModel() { FirstName = "Sarah", LastName = "Garcia", Email = "sarah.g@example.com" });
     }
 }

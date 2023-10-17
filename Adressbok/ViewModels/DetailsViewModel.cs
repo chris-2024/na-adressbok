@@ -13,14 +13,11 @@ public partial class DetailsViewModel : ObservableObject
 
     [ObservableProperty]
     private ContactModel contact;
-    [ObservableProperty]
-    private string displayName;
 
     public DetailsViewModel(ContactModel contact, IContactService contactService)
     {
         _contactService = contactService;
         this.contact = contact;
-        displayName = string.Join(" ", new[] { contact.FirstName, contact.LastName }.Where(s => !string.IsNullOrEmpty(s)));
     }
 
     [RelayCommand]
