@@ -1,9 +1,8 @@
 ﻿using Adressbok.Interfaces;
 using Adressbok.Models;
-using Adressbok.Services;
+using Adressbok.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Text;
 
 namespace Adressbok.ViewModels;
 
@@ -28,12 +27,11 @@ public partial class DetailsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task GoToEdit()
+    public async Task GoToUpdateContact()
     {
-        //var viewModel = new AddEditViewModel(contact, _contactService);
-        //var editPage = new DetailsPage(viewModel);
-        //await Shell.Current.Navigation.PushAsync(editPage);
-        await Shell.Current.GoToAsync("..");
+        var viewModel = new ManageContactViewModel(Contact, _contactService);
+        var manageContactPage = new ManageContactPage(viewModel);
+        await Shell.Current.Navigation.PushAsync(manageContactPage);
     }
 
     [RelayCommand]

@@ -17,7 +17,7 @@
             <Label Text="Address" FontSize="14" TextColor="Gray" Margin="0, 20, 0, 0"/>
             <Label Text="{Binding Contact.Address}" FontSize="18" />
 
-            <Button Text="Edit" Command="{Binding GoToEditCommand}" BackgroundColor="Transparent" BorderWidth="0" Margin="10, 20" TextColor="Gray"/>
+            <Button Text="Edit" Command="{Binding GoToUpdateContactCommand}" BackgroundColor="Transparent" BorderWidth="0" Margin="10, 20" TextColor="Gray"/>
         </StackLayout>
         <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="auto, *, auto" Margin="20, 5">
             <Button Text="Return" Command="{Binding ReturnCommand}" Margin="10" />

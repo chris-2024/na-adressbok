@@ -25,6 +25,9 @@ namespace Adressbok
             builder.Services.AddTransient<DetailsViewModel>();
             builder.Services.AddTransient<DetailsPage>();
 
+            builder.Services.AddTransient<ManageContactViewModel>();
+            builder.Services.AddTransient<ManageContactPage>();
+
             return builder.Build();
         }
     }

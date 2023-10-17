@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Adressbok.ViewModels"
+             x:DataType="viewmodels:ManageContactViewModel"
+             x:Class="Adressbok.Views.ManageContactPage">
+
+    <Grid RowDefinitions="auto, 4*, auto" ColumnDefinitions="1*, 5*, 1*" Padding="20" RowSpacing="30">
+        <Label Grid.Column="1" Text="{Binding Contact, Converter={StaticResource DisplayNameConverter}}" TextTransform="Uppercase" FontSize="22" TextColor="Gray" HorizontalOptions="CenterAndExpand"/>
+        <StackLayout Grid.Row="1" Grid.Column="1" VerticalOptions="FillAndExpand">
+                <Entry Text="{Binding Contact.FirstName}"  Placeholder="FirstName" Margin="0,0,0,10" />
+                <Entry Text="{Binding Contact.LastName}" Placeholder="LastName" Margin="0,0,0,10" />
+                <Entry Text="{Binding Contact.Email}" Placeholder="Email" Margin="0,0,0,10"  />
+                <Entry Text="{Binding Contact.PhoneNumber}" Placeholder="Phonenumber" Margin="0,0,0,30" />
+            <Entry Text="{Binding Contact.Address}" Placeholder="Address" Margin="0,0,0,30" />
+
+        </StackLayout>
+        <Button Grid.Row="2" Grid.Column="1" Command="{Binding SaveContactCommand}" Text="Save" />
+
+    </Grid>
+
+</ContentPage>

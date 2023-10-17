@@ -24,6 +24,7 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        <Button Grid.Row="2" Grid.Column="1" Text="Add" Command="{Binding GoToAddContactCommand}" BackgroundColor="Transparent" BorderWidth="0" Margin="10, 20" TextColor="Gray"/>
     </Grid>
 
 </ContentPage>
