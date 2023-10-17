@@ -1,4 +1,5 @@
 ﻿using Adressbok.Interfaces;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 
 namespace Adressbok.Services;
@@ -15,24 +16,35 @@ internal class FileService<T> : IFileService<T> where T : class
 
     public IEnumerable<T> ReadFromFile()
     {
-        if (File.Exists(_filePath))
+        try
         {
-            using var sw = new StreamReader(_filePath);
-            var content = sw.ReadToEnd();
-            if (!string.IsNullOrEmpty(content))
-                return JsonSerializer.Deserialize<IEnumerable<T>>(content)!;
+            if (File.Exists(_filePath))
+            {
+                using var sw = new StreamReader(_filePath);
+                var content = sw.ReadToEnd();
+                if (!string.IsNullOrEmpty(content))
+                    return JsonSerializer.Deserialize<IEnumerable<T>>(content)!;
+            }
         }
+        catch { }
 
         return Enumerable.Empty<T>();
     }
 
-    public void WriteToFile(IEnumerable<T> items)
+    public bool WriteToFile(IEnumerable<T> items)
     {
-        if (items is null) return;
+        try
+        {
+            if (items is not null)
+            { 
+                var json = JsonSerializer.Serialize(items);
 
-        var json = JsonSerializer.Serialize(items);
+                using var sw = new StreamWriter(_filePath);
+                sw.WriteLine(json);
+            }
+        }
+        catch { return false; }
 
-        using var sw = new StreamWriter(_filePath);
-        sw.WriteLine(json);
+        return true;
     }
 }

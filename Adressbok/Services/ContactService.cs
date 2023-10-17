@@ -1,98 +1,75 @@
 ﻿using Adressbok.Interfaces;
 using Adressbok.Models;
-using Microsoft.Maui.Controls;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Adressbok.Services
+namespace Adressbok.Services;
+
+partial class ContactService : IContactService
 {
-    internal class ContactService : IContactService
+    private readonly IFileService<ContactModel> _fileService;
+    private readonly List<ContactModel> _contacts;
+
+    public ContactService()
     {
-        private readonly IFileService<ContactModel> _fileService;
-        private readonly List<ContactModel> _contacts;
+        _fileService = new FileService<ContactModel>("Contacts");
+        _contacts = new(_fileService.ReadFromFile());
+    }
 
-        public ContactService()
+    private bool UpdateContacts() => _fileService.WriteToFile(_contacts.ToList());
+
+    public bool AddContact(ContactModel contact)
+    {
+        try
         {
-            _fileService = new FileService<ContactModel>("Contacts");
-            _contacts = new(_fileService.ReadFromFile());
-
-            //AddContact(new ContactModel() { FirstName = "Bert", Email = "bert@anka.se" });
-            //AddContact(new ContactModel() { FirstName = "Ketchup", Email = "ketchup@tomato.co.uk" });
-            //AddContact(new ContactModel() { FirstName = "Svanslös", Email = "svans@mail.com" });
-
-            //RemoveContact("bert@anka.se");
-
-            UpdateContacts();
+            _contacts.Add(contact);
         }
+        catch { return false; }
 
-        public bool AddContact(ContactModel contact)
-        {
-            try
-            {
-                _contacts.Add(contact);
-            }
-            catch { return false; }
+        return UpdateContacts();
+    }
 
-            UpdateContacts();
-            return true;
-        }
+    public List<ContactModel> GetAllContacts() => _contacts;
 
-        public List<ContactModel> GetAllContacts() => _contacts;
+    public ContactModel GetContact(Guid id)
+    {
+        return _contacts.FirstOrDefault(c => c.Id == id);
+    }
 
-        public ContactModel GetContact(Guid id)
-        {
-            return _contacts.FirstOrDefault(c => c.Id == id);
-        }
+    public ContactModel GetContact(string parameter)
+    {
+        return _contacts.FirstOrDefault(c => (c.FirstName?.Contains(parameter) ?? false) || (c.LastName?.Contains(parameter) ?? false) || c.Email.Contains(parameter));
+    }
 
-        public ContactModel GetContact(string parameter)
-        {
-            return _contacts.FirstOrDefault(c => (c.FirstName?.Contains(parameter) ?? false) || (c.LastName?.Contains(parameter) ?? false) || c.Email.Contains(parameter));
-        }
+    public bool UpdateContact(ContactModel contactEdit)
+    {
+        var contactOld = _contacts.Find(c => contactEdit.Id == contactEdit.Id);
 
-        public bool UpdateContact(ContactModel contactEdit)
-        {
-            var contactOld = _contacts.Find(c => contactEdit.Id == contactEdit.Id);
+        if (contactOld is null) return false;
 
-            if (contactOld is null) return false;
+        int index = _contacts.IndexOf(contactOld);
 
-            int index = _contacts.IndexOf(contactOld);
+        if (index < 0 || index >= _contacts.Count) return false;
+            
+        _contacts[index] = contactEdit;
+        return UpdateContacts();
+    }
 
-            if (index < 0 || index >= _contacts.Count) return false;
-                
-            _contacts[index] = contactEdit;
-            UpdateContacts();
-            return true;
-        }
+    public bool RemoveContact(Guid id)
+    {
+        var contact = _contacts.FirstOrDefault(x => x.Id == id);
 
-        public bool RemoveContact(Guid id)
-        {
-            var contact = _contacts.FirstOrDefault(x => x.Id == id);
+        if (contact is null) return false;
 
-            if (contact is null) return false;
+        _contacts.Remove(contact);
+        return UpdateContacts();
+    }
 
-            _contacts.Remove(contact);
-            UpdateContacts();
-            return true;
-        }
+    public bool RemoveContact(string email)
+    {
+        var contact = _contacts.FirstOrDefault(x => x.Email == email);
 
-        public bool RemoveContact(string email)
-        {
-            var contact = _contacts.FirstOrDefault(x => x.Email == email);
+        if (contact is null) return false;
 
-            if (contact is null) return false;
-
-            _contacts.Remove(contact);
-            UpdateContacts();
-            return true;
-        }
-
-        private void UpdateContacts()
-        {
-            _fileService.WriteToFile(_contacts.ToList());
-        }
+        _contacts.Remove(contact);
+        return UpdateContacts();
     }
 }

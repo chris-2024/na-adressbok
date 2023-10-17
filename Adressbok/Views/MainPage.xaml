@@ -7,7 +7,7 @@
              x:Class="Adressbok.Views.MainPage">
 
     <Grid RowDefinitions="auto,*" Padding="30" RowSpacing="20">
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Contacts}">
+        <!--<CollectionView Grid.Row="1" ItemsSource="{Binding Contacts}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type models:ContactModel}">
                     <Grid RowDefinitions="auto,auto" ColumnDefinitions="auto,auto" ColumnSpacing="5">
@@ -17,7 +17,20 @@
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-        </CollectionView>
+        </CollectionView>-->
+
+        <ListView ItemsSource="{Binding Contacts}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type models:ContactModel}">
+                    <ViewCell>
+                        <StackLayout Spacing="4">
+                            <Label Text="{Binding FirstName}" FontSize="16" FontAttributes="Bold" />
+                            <Label Text="{Binding Email}" FontSize="12" TextColor="Gray" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 
 </ContentPage>
