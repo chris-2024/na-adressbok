@@ -7,30 +7,22 @@
              x:Class="Adressbok.Views.MainPage">
 
     <Grid RowDefinitions="auto,*" Padding="30" RowSpacing="20">
-        <!--<CollectionView Grid.Row="1" ItemsSource="{Binding Contacts}">
+        <CollectionView Grid.Row="0" ItemsSource="{Binding Contacts}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type models:ContactModel}">
-                    <Grid RowDefinitions="auto,auto" ColumnDefinitions="auto,auto" ColumnSpacing="5">
-                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding FirstName}" />
-                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding LastName}" />
-                        <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Email}" />
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>-->
-
-        <ListView ItemsSource="{Binding Contacts}">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type models:ContactModel}">
-                    <ViewCell>
-                        <StackLayout Spacing="4">
+                    <Grid Padding="5">
+                        <StackLayout Margin="10,0,0,0">
                             <Label Text="{Binding FirstName}" FontSize="16" FontAttributes="Bold" />
                             <Label Text="{Binding Email}" FontSize="12" TextColor="Gray" />
                         </StackLayout>
-                    </ViewCell>
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="{Binding .}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=GoToDetailsCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 
 </ContentPage>

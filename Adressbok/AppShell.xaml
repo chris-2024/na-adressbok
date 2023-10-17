@@ -6,7 +6,8 @@
     xmlns:local="clr-namespace:Adressbok"
     xmlns:views="clr-namespace:Adressbok.Views"
     Shell.FlyoutBehavior="Disabled"
-    Shell.NavBarIsVisible="True">
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarIsVisible="False">
 
     <ShellContent
         Title="Home"

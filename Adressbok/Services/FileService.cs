@@ -1,5 +1,4 @@
 ﻿using Adressbok.Interfaces;
-using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 
 namespace Adressbok.Services;
@@ -31,7 +30,7 @@ internal class FileService<T> : IFileService<T> where T : class
         return Enumerable.Empty<T>();
     }
 
-    public bool WriteToFile(IEnumerable<T> items)
+    public void WriteToFile(IEnumerable<T> items)
     {
         try
         {
@@ -40,11 +39,9 @@ internal class FileService<T> : IFileService<T> where T : class
                 var json = JsonSerializer.Serialize(items);
 
                 using var sw = new StreamWriter(_filePath);
-                sw.WriteLine(json);
+                sw.Write(json);
             }
         }
-        catch { return false; }
-
-        return true;
+        catch { }
     }
 }

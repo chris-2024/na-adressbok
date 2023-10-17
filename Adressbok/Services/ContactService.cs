@@ -1,75 +1,78 @@
 ﻿using Adressbok.Interfaces;
 using Adressbok.Models;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace Adressbok.Services;
 
-partial class ContactService : IContactService
+internal class ContactService : IContactService
 {
     private readonly IFileService<ContactModel> _fileService;
-    private readonly List<ContactModel> _contacts;
+    private ObservableCollection<ContactModel> contacts;
 
     public ContactService()
     {
         _fileService = new FileService<ContactModel>("Contacts");
-        _contacts = new(_fileService.ReadFromFile());
+        contacts = new(_fileService.ReadFromFile());
+        contacts.CollectionChanged += UpdateContacts;
     }
 
-    private bool UpdateContacts() => _fileService.WriteToFile(_contacts.ToList());
+    private void UpdateContacts(object sender, NotifyCollectionChangedEventArgs e) => _fileService.WriteToFile(contacts.ToList());
 
     public bool AddContact(ContactModel contact)
     {
         try
         {
-            _contacts.Add(contact);
+            contacts.Add(contact);
         }
         catch { return false; }
 
-        return UpdateContacts();
+        return true;
     }
 
-    public List<ContactModel> GetAllContacts() => _contacts;
+    public ObservableCollection<ContactModel> GetAllContacts() => contacts;
 
     public ContactModel GetContact(Guid id)
     {
-        return _contacts.FirstOrDefault(c => c.Id == id);
+        return contacts.FirstOrDefault(c => c.Id == id);
     }
 
     public ContactModel GetContact(string parameter)
     {
-        return _contacts.FirstOrDefault(c => (c.FirstName?.Contains(parameter) ?? false) || (c.LastName?.Contains(parameter) ?? false) || c.Email.Contains(parameter));
+        return contacts.FirstOrDefault(c => (c.FirstName?.Contains(parameter) ?? false) || (c.LastName?.Contains(parameter) ?? false) || c.Email.Contains(parameter));
     }
 
     public bool UpdateContact(ContactModel contactEdit)
     {
-        var contactOld = _contacts.Find(c => contactEdit.Id == contactEdit.Id);
+        var contactOld = contacts.FirstOrDefault(c => contactEdit.Id == contactEdit.Id);
 
         if (contactOld is null) return false;
 
-        int index = _contacts.IndexOf(contactOld);
+        int index = contacts.IndexOf(contactOld);
 
-        if (index < 0 || index >= _contacts.Count) return false;
+        if (index < 0 || index >= contacts.Count) return false;
             
-        _contacts[index] = contactEdit;
-        return UpdateContacts();
+        contacts[index] = contactEdit;
+        return true;
     }
 
     public bool RemoveContact(Guid id)
     {
-        var contact = _contacts.FirstOrDefault(x => x.Id == id);
+        var contact = contacts.FirstOrDefault(x => x.Id == id);
 
         if (contact is null) return false;
 
-        _contacts.Remove(contact);
-        return UpdateContacts();
+        contacts.Remove(contact);
+        return true;
     }
 
     public bool RemoveContact(string email)
     {
-        var contact = _contacts.FirstOrDefault(x => x.Email == email);
+        var contact = contacts.FirstOrDefault(x => x.Email == email);
 
         if (contact is null) return false;
 
-        _contacts.Remove(contact);
-        return UpdateContacts();
+        contacts.Remove(contact);
+        return true;
     }
 }

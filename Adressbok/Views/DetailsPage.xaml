@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Adressbok.ViewModels"
+             x:DataType="viewmodels:DetailsViewModel"
+             x:Class="Adressbok.Views.DetailsPage">
+
+    <Grid RowDefinitions="*, auto" Padding="30" RowSpacing="20">
+        <Grid Grid.Row="0" RowDefinitions="auto,auto" ColumnDefinitions="auto,auto" ColumnSpacing="5">
+            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Contact.FirstName}" />
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Contact.LastName}" />
+            <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Contact.Email}" />
+        </Grid>
+
+        <HorizontalStackLayout Grid.Row="1" Padding="20">
+            <Button Text="Return" Command="{Binding ReturnCommand}" Margin="5"/>
+            <Button Text="Delete" Command="{Binding RemoveContactCommand}" Margin="5"/>
+        </HorizontalStackLayout>
+    </Grid>
+
+</ContentPage>

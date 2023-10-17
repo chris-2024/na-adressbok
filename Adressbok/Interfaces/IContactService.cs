@@ -1,4 +1,5 @@
 ﻿using Adressbok.Models;
+using System.Collections.ObjectModel;
 
 namespace Adressbok.Interfaces;
 
@@ -7,7 +8,7 @@ public interface IContactService
     /// <summary>
     /// Get all contacts.
     /// </summary>
-    List<ContactModel> GetAllContacts();
+    ObservableCollection<ContactModel> GetAllContacts();
 
     /// <summary>
     /// Add New Contact To List.

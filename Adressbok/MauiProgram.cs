@@ -19,6 +19,9 @@ namespace Adressbok
             builder.Services.AddSingleton<MainViewModel>();
             builder.Services.AddSingleton<MainPage>();
 
+            builder.Services.AddTransient<DetailsViewModel>();
+            builder.Services.AddTransient<DetailsPage>();
+
             return builder.Build();
         }
     }
