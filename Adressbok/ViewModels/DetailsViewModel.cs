@@ -23,7 +23,7 @@ public partial class DetailsViewModel : ObservableObject
     public async Task RemoveContact()
     {
         _contactService.RemoveContact(Contact.Id);
-        await Shell.Current.GoToAsync("..");
+        await Return();
     }
 
     [RelayCommand]

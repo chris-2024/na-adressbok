@@ -1,5 +1,6 @@
 ﻿using Adressbok.Interfaces;
 using Adressbok.Models;
+using Adressbok.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -36,6 +37,9 @@ public partial class ManageContactViewModel : ObservableObject
             result = _contactService.UpdateContact(Contact);
 
         if (result)
-            await Shell.Current.GoToAsync("..");
+        {
+            // Go back to MainPage
+            await Shell.Current.Navigation.PopToRootAsync();
+        }
     }
 }

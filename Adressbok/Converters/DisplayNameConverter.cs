@@ -13,15 +13,19 @@ public class DisplayNameConverter : IValueConverter
 
             if (contact != null)
             {
+                // Check if FirstName or LastName is null, empty or whitespace
                 if (!string.IsNullOrWhiteSpace(contact.FirstName) || !string.IsNullOrWhiteSpace(contact.LastName))
                 {
+                    // Return either firstname, lastname or both combined
+                    // Trim any leading or trailing whitespace
                     return $"{contact.FirstName} {contact.LastName}".Trim();
                 }
             }
         }
         catch { }
 
-        return "---";
+        // If contact or firstname + lastname is missing, return "*"
+        return "*";
     }    
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

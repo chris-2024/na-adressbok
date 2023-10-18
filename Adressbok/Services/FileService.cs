@@ -10,6 +10,7 @@ internal class FileService<T> : IFileService<T> where T : class
 
     public FileService(string fileName)
     {
+        fileName ??= "DefaultNamedFile";
         _filePath = Path.Combine(_currentDirectory, $"{fileName}.json");
     }
 
