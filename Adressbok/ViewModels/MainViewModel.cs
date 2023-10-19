@@ -11,19 +11,28 @@ namespace Adressbok.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     private readonly IContactService _contactService;
+
     [ObservableProperty]
     private ObservableCollection<ContactModel> contacts;
+
+    [ObservableProperty]
+    private string contactEmail;
+
+    [ObservableProperty]
+    private string removeContactByEmailMessage;
 
     public MainViewModel(ContactService contactService) 
     {
         _contactService = contactService;
-        GetAllContacts();
-        _contactService.ContactsUpdated += GetAllContacts;
+        ResetMainView();
+        _contactService.ContactsUpdated += ResetMainView;
     }
 
-    private void GetAllContacts()
+    private void ResetMainView()
     {
         Contacts = new(_contactService.GetAllContacts());
+        RemoveContactByEmailMessage = "";
+        ContactEmail = "";
     }
 
     [RelayCommand]
@@ -40,5 +49,13 @@ public partial class MainViewModel : ObservableObject
         var viewModel = new ManageContactViewModel(_contactService);
         var manageContactPage = new ManageContactPage(viewModel);
         await Shell.Current.Navigation.PushAsync(manageContactPage);
+    }
+
+    [RelayCommand]
+    public void RemoveContactByEmail()
+    {
+        var result = _contactService.RemoveContact(ContactEmail);
+
+        RemoveContactByEmailMessage = result ? "" : "No contact with that email";
     }
 }
