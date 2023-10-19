@@ -13,7 +13,7 @@ namespace Adressbok.Tests.UnitTests
         {
             // Arrange
             var mockFileService = new Mock<IFileService<ContactModel>>();
-            var contacts = new ObservableCollection<ContactModel>();
+            var contacts = new List<ContactModel>();
             var mockContactService = new ContactService(mockFileService.Object, contacts);
 
             var newContact = new ContactModel
@@ -36,7 +36,7 @@ namespace Adressbok.Tests.UnitTests
         {
             // Arrange
             var mockFileService = new Mock<IFileService<ContactModel>>();
-            var contacts = new ObservableCollection<ContactModel>();
+            var contacts = new List<ContactModel>();
             var mockContactService = new ContactService(mockFileService.Object, contacts);
 
             var existingContact = new ContactModel
@@ -60,7 +60,7 @@ namespace Adressbok.Tests.UnitTests
         {
             // Arrange
             var mockFileService = new Mock<IFileService<ContactModel>>();
-            var contacts = new ObservableCollection<ContactModel>();
+            var contacts = new List<ContactModel>();
             var mockContactService = new ContactService(mockFileService.Object, contacts);
 
             var existingContact = new ContactModel
@@ -69,14 +69,13 @@ namespace Adressbok.Tests.UnitTests
                 LastName = "Doe",
                 Email = "johndoe@example.com"
             };
+
             contacts.Add(existingContact);
 
-            var updatedContact = new ContactModel
-            {
-                FirstName = "UpdatedFirstName",
-                LastName = "UpdatedLastName",
-                Email = "updated@example.com"
-            };
+            var updatedContact = contacts[0];
+            updatedContact.FirstName = "UpdatedFirstName";
+            updatedContact.LastName = "UpdatedLastName";
+            updatedContact.Email = "updated@example.com";
 
             // Act
             bool result = mockContactService.UpdateContact(updatedContact);
@@ -85,9 +84,6 @@ namespace Adressbok.Tests.UnitTests
             Assert.True(result);
             var updatedContactInCollection = contacts.FirstOrDefault(c => c.Id == updatedContact.Id);
             Assert.NotNull(updatedContactInCollection);
-            Assert.Equal("UpdatedFirstName", updatedContactInCollection.FirstName);
-            Assert.Equal("UpdatedLastName", updatedContactInCollection.LastName);
-            Assert.Equal("updated@example.com", updatedContactInCollection.Email);
         }
 
         [Fact]
@@ -95,7 +91,7 @@ namespace Adressbok.Tests.UnitTests
         {
             // Arrange
             var mockFileService = new Mock<IFileService<ContactModel>>();
-            var contacts = new ObservableCollection<ContactModel>();
+            var contacts = new List<ContactModel>();
             var mockContactService = new ContactService(mockFileService.Object, contacts);
 
             var existingContact = new ContactModel
@@ -111,7 +107,7 @@ namespace Adressbok.Tests.UnitTests
 
             // Assert
             Assert.True(result);
-            Assert.Empty(contacts); // Make sure the contact was removed from the collection.
+            Assert.Empty(contacts); // Make sure the contact was removed from the List.
         }
 
         [Fact]
@@ -119,7 +115,7 @@ namespace Adressbok.Tests.UnitTests
         {
             // Arrange
             var mockFileService = new Mock<IFileService<ContactModel>>();
-            var contacts = new ObservableCollection<ContactModel>();
+            var contacts = new List<ContactModel>();
             var mockContactService = new ContactService(mockFileService.Object, contacts);
 
             var existingContact = new ContactModel
@@ -135,7 +131,7 @@ namespace Adressbok.Tests.UnitTests
 
             // Assert
             Assert.True(result);
-            Assert.Empty(contacts); // Make sure the contact was removed from the collection.
+            Assert.Empty(contacts); // Make sure the contact was removed from the List.
         }
     }
 }

@@ -17,7 +17,13 @@ public partial class MainViewModel : ObservableObject
     public MainViewModel(ContactService contactService) 
     {
         _contactService = contactService;
-        contacts = _contactService.GetAllContacts();
+        GetAllContacts();
+        _contactService.ContactsUpdated += GetAllContacts;
+    }
+
+    private void GetAllContacts()
+    {
+        Contacts = new(_contactService.GetAllContacts());
     }
 
     [RelayCommand]

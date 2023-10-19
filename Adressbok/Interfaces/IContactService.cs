@@ -6,9 +6,14 @@ namespace Adressbok.Interfaces;
 public interface IContactService
 {
     /// <summary>
+    /// Event to trigger changes to contacts.
+    /// </summary>
+    event Action ContactsUpdated;
+
+    /// <summary>
     /// Get all contacts.
     /// </summary>
-    ObservableCollection<ContactModel> GetAllContacts();
+    List<ContactModel> GetAllContacts();
 
     /// <summary>
     /// Add New Contact To List.
