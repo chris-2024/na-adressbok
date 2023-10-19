@@ -19,7 +19,7 @@ public partial class ManageContactViewModel : ObservableObject
     {
         _contactService = contactService;
         _contactId = contact?.Id;
-        this.contact = contact ?? new();
+        this.contact = new ContactModel(contact.Id) { FirstName = contact.FirstName, LastName = contact.LastName, Email = contact.Email, PhoneNumber = contact.PhoneNumber, Address = contact.Address };
     }
 
     [RelayCommand]

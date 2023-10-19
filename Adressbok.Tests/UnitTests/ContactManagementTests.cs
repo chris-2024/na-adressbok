@@ -72,10 +72,12 @@ namespace Adressbok.Tests.UnitTests
 
             contacts.Add(existingContact);
 
-            var updatedContact = contacts[0];
-            updatedContact.FirstName = "UpdatedFirstName";
-            updatedContact.LastName = "UpdatedLastName";
-            updatedContact.Email = "updated@example.com";
+            var updatedContact = new ContactModel(existingContact.Id)
+            {
+                FirstName = "UpdatedFirstName",
+                LastName = "UpdatedLastName",
+                Email = "updated@example.com"
+            };
 
             // Act
             bool result = mockContactService.UpdateContact(updatedContact);

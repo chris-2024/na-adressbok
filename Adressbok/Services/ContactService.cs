@@ -66,7 +66,7 @@ public class ContactService : IContactService
         // If the contact with the specified ID doesn't exist
         if (contactOld is null) return false;
         
-        // In the eventuality the contact is not updated directly update properties manually
+        // Check if the two objects share the same reference
         if (contactEdit != contactOld)
         {
             // Update the contact properties with the new values
@@ -77,8 +77,9 @@ public class ContactService : IContactService
             contactOld.Address = contactEdit.Address;
         }
 
-        // Update the contact in the file
+        // Invoke contacts updated to save the updated contact information
         ContactsUpdated.Invoke();
+
         return true;
     }
 
