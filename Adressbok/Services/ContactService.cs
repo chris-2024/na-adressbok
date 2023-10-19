@@ -36,13 +36,13 @@ public class ContactService : IContactService
 
     public bool AddContact(ContactModel contact)
     {
+        if (contact is null || _contacts.Any(c => c.Email == contact.Email)) return false;
+
         try
         {
-            // TODO: trim fields - check if email already exist?
-            // Try to add the new contact to the collection
             _contacts.Add(contact);
         }
-        catch { return false; } // If an exception occurs while adding a contact
+        catch { return false; }
 
         ContactsUpdated.Invoke();
         return true;

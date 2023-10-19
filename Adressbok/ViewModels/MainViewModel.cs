@@ -35,9 +35,9 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task GoToAddContact(ContactModel contact)
+    public async Task GoToAddContact()
     {
-        var viewModel = new ManageContactViewModel(contact, _contactService);
+        var viewModel = new ManageContactViewModel(_contactService);
         var manageContactPage = new ManageContactPage(viewModel);
         await Shell.Current.Navigation.PushAsync(manageContactPage);
     }
