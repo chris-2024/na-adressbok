@@ -66,6 +66,9 @@ public class ContactService : IContactService
         // If the contact with the specified ID doesn't exist
         if (contactOld is null) return false;
         
+        // Return false if email is changed and existing contact has the updated email
+        if (contactOld.Email != contactEdit.Email && _contacts.Any(c => c.Email == contactEdit.Email)) return false;
+
         // Check if the two objects share the same reference
         if (contactEdit != contactOld)
         {
