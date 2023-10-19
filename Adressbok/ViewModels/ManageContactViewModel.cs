@@ -16,17 +16,19 @@ public partial class ManageContactViewModel : ObservableObject
     private ContactModel contact;
 
     [ObservableProperty]
-    private string invalidEmail;
+    private string emailErrorMessage;
 
     public ManageContactViewModel(ContactModel contact, IContactService contactService)
     {
         _contactService = contactService;
-        _contactId = contact?.Id;
-        this.contact = new ContactModel(contact.Id) { FirstName = contact.FirstName, LastName = contact.LastName, Email = contact.Email, PhoneNumber = contact.PhoneNumber, Address = contact.Address };
-        invalidEmail = "";
+        // Sets id if its an existing contact to be updated, null if new contact
+        _contactId = contact?.Id; 
+        // Create new contactmodel if contact is null, otherwise copy the properties
+        this.contact = contact is null ? new() : new ContactModel(contact.Id) { FirstName = contact.FirstName, LastName = contact.LastName, Email = contact.Email, PhoneNumber = contact.PhoneNumber, Address = contact.Address };
+        emailErrorMessage = "";
     }
 
-    public ManageContactViewModel(IContactService contactService) : this(new(), contactService) { }
+    public ManageContactViewModel(IContactService contactService) : this(null, contactService) { }
 
     [RelayCommand]
     async Task SaveContact()
@@ -35,7 +37,7 @@ public partial class ManageContactViewModel : ObservableObject
 
         if (!IsValidEmail(Contact.Email))
         {
-            InvalidEmail = "Invalid Email.";
+            EmailErrorMessage = "Invalid Email.";
             return;
         }
 
@@ -50,7 +52,7 @@ public partial class ManageContactViewModel : ObservableObject
             // Go back to MainPage
             await Shell.Current.Navigation.PopToRootAsync();
         else
-            InvalidEmail = "Contact with this email already exist.";
+            EmailErrorMessage = "Contact with this email already exist.";
     }
 
     private bool IsValidEmail(string email)

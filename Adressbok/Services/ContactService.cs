@@ -36,10 +36,9 @@ public class ContactService : IContactService
 
     public bool AddContact(ContactModel contact)
     {
-        if (contact is null || _contacts.Any(c => c.Email == contact.Email)) return false;
-
         try
         {
+            if (contact is null || _contacts.Any(c => c.Email == contact.Email)) return false;
             _contacts.Add(contact);
         }
         catch { return false; }
@@ -50,35 +49,41 @@ public class ContactService : IContactService
 
     public ContactModel GetContact(Guid id)
     {
+        // Returns null if no contact is found
         return _contacts.FirstOrDefault(c => c.Id == id);
     }
 
     public ContactModel GetContact(string parameter)
     {
+        // Returns null if no contact is found
         return _contacts.FirstOrDefault(c => (c.FirstName?.Contains(parameter) ?? false) || (c.LastName?.Contains(parameter) ?? false) || c.Email.Contains(parameter));
     }
 
     // Update existing contact
     public bool UpdateContact(ContactModel contactEdit)
     {
-        var contactOld = _contacts.FirstOrDefault(c => c.Id == contactEdit.Id);
-
-        // If the contact with the specified ID doesn't exist
-        if (contactOld is null) return false;
-        
-        // Return false if email is changed and existing contact has the updated email
-        if (contactOld.Email != contactEdit.Email && _contacts.Any(c => c.Email == contactEdit.Email)) return false;
-
-        // Check if the two objects share the same reference
-        if (contactEdit != contactOld)
+        try
         {
-            // Update the contact properties with the new values
-            contactOld.FirstName = contactEdit.FirstName;
-            contactOld.LastName = contactEdit.LastName;
-            contactOld.Email = contactEdit.Email;
-            contactOld.PhoneNumber = contactEdit.PhoneNumber;
-            contactOld.Address = contactEdit.Address;
+            var contactOld = _contacts.FirstOrDefault(c => c.Id == contactEdit.Id);
+
+            // If the contact with the specified ID doesn't exist
+            if (contactOld is null) return false;
+
+            // Return false if email is changed and existing contact has the updated email
+            if (contactOld.Email != contactEdit.Email && _contacts.Any(c => c.Email == contactEdit.Email)) return false;
+
+            // Check if the two objects share the same reference
+            if (contactEdit != contactOld)
+            {
+                // Update the contact properties with the new values
+                contactOld.FirstName = contactEdit.FirstName;
+                contactOld.LastName = contactEdit.LastName;
+                contactOld.Email = contactEdit.Email;
+                contactOld.PhoneNumber = contactEdit.PhoneNumber;
+                contactOld.Address = contactEdit.Address;
+            }
         }
+        catch { return false; }
 
         // Invoke contacts updated to save the updated contact information
         ContactsUpdated.Invoke();
@@ -88,13 +93,17 @@ public class ContactService : IContactService
 
     public bool RemoveContact(Guid id)
     {
-        // Find the contact by the Guid provided
-        var contact = _contacts.FirstOrDefault(x => x.Id == id);
+        try
+        {
+            // Find the contact by the Guid provided
+            var contact = _contacts.FirstOrDefault(x => x.Id == id);
 
-        if (contact is null) return false;
+            if (contact is null) return false;
 
-        _contacts.Remove(contact);
-        ContactsUpdated.Invoke();
+            _contacts.Remove(contact);
+            ContactsUpdated.Invoke();
+        }
+        catch { return false; }
 
         // Indicate successful removal
         return true;
@@ -102,13 +111,17 @@ public class ContactService : IContactService
 
     public bool RemoveContact(string email)
     {
-        // Find the contact by the email address provided
-        var contact = _contacts.FirstOrDefault(x => x.Email == email);
+        try
+        {
+            // Find the contact by the email address provided
+            var contact = _contacts.FirstOrDefault(x => x.Email == email);
 
-        if (contact is null) return false;
+            if (contact is null) return false;
 
-        _contacts.Remove(contact);
-        ContactsUpdated.Invoke();
+            _contacts.Remove(contact);
+            ContactsUpdated.Invoke();
+        }
+        catch { return false; }
 
         // Indicate successful removal
         return true; 

@@ -10,7 +10,7 @@
         <StackLayout Grid.Row="1" Grid.Column="1" VerticalOptions="FillAndExpand">
             <Entry Text="{Binding Contact.FirstName}"  Placeholder="FirstName" Margin="0,0,0,20" />
             <Entry Text="{Binding Contact.LastName}" Placeholder="LastName" Margin="0,0,0,8" />
-            <Label Text="{Binding InvalidEmail}" TextColor="Red" FontSize="10" Margin="0" Padding="0" FontAttributes="Italic" />
+            <Label Text="{Binding EmailErrorMessage}" TextColor="Red" FontSize="10" Margin="0" Padding="0" FontAttributes="Italic" />
             <Entry Text="{Binding Contact.Email}" Placeholder="Email" Margin="0,0,0,20"  />
             <Entry Text="{Binding Contact.PhoneNumber}" Placeholder="Phonenumber" Margin="0,0,0,20" />
             <Entry Text="{Binding Contact.Address}" Placeholder="Address" Margin="0,0,0,30" />

@@ -7,8 +7,8 @@ namespace Adressbok
 {
     public partial class App : Application
     {
-        private const int WindowWidth = 600;
-        private const int WindowHeight = 800;
+        private const int WindowWidth = 550;
+        private const int WindowHeight = 700;
 
         public App()
         {
