@@ -2,20 +2,26 @@
 using Adressbok.Models;
 using Adressbok.Services;
 using Moq;
-using System.Collections.ObjectModel;
 
 namespace Adressbok.Tests.UnitTests
 {
     public class ContactManagementTests
     {
+        private readonly Mock<IFileService<ContactModel>> mockFileService;
+        private readonly List<ContactModel> contacts;
+        private readonly IContactService contactService;
+
+        public ContactManagementTests()
+        {
+            mockFileService = new Mock<IFileService<ContactModel>>();
+            contacts = new List<ContactModel>();
+            contactService = new ContactService(mockFileService.Object, contacts);
+        }
+
         [Fact]
-        public void AddContact_Should_AddContact()
+        public void AddContact_Should_ReturnTrueIfContactAddedToList()
         {
             // Arrange
-            var mockFileService = new Mock<IFileService<ContactModel>>();
-            var contacts = new List<ContactModel>();
-            var mockContactService = new ContactService(mockFileService.Object, contacts);
-
             var newContact = new ContactModel
             {
                 FirstName = "John",
@@ -24,21 +30,17 @@ namespace Adressbok.Tests.UnitTests
             };
 
             // Act
-            bool result = mockContactService.AddContact(newContact);
+            bool result = contactService.AddContact(newContact);
 
             // Assert
             Assert.True(result);
-            Assert.Single(contacts); // Make sure the contact was added to the collection.
+            Assert.Single(contacts); // Make sure only one contact was added to the List.
         }
 
         [Fact]
-        public void GetContact_Should_ReturnContactById()
+        public void GetContact_Should_ReturnTrueIfRetrievedCorrectContactById()
         {
             // Arrange
-            var mockFileService = new Mock<IFileService<ContactModel>>();
-            var contacts = new List<ContactModel>();
-            var mockContactService = new ContactService(mockFileService.Object, contacts);
-
             var existingContact = new ContactModel
             {
                 FirstName = "John",
@@ -48,7 +50,7 @@ namespace Adressbok.Tests.UnitTests
             contacts.Add(existingContact);
 
             // Act
-            var retrievedContact = mockContactService.GetContact(existingContact.Id);
+            var retrievedContact = contactService.GetContact(existingContact.Id);
 
             // Assert
             Assert.NotNull(retrievedContact);
@@ -56,13 +58,9 @@ namespace Adressbok.Tests.UnitTests
         }
 
         [Fact]
-        public void UpdateContact_Should_UpdateContact()
+        public void UpdateContact_Should_ReturnTrueIfContactUpdated()
         {
             // Arrange
-            var mockFileService = new Mock<IFileService<ContactModel>>();
-            var contacts = new List<ContactModel>();
-            var mockContactService = new ContactService(mockFileService.Object, contacts);
-
             var existingContact = new ContactModel
             {
                 FirstName = "John",
@@ -80,7 +78,7 @@ namespace Adressbok.Tests.UnitTests
             };
 
             // Act
-            bool result = mockContactService.UpdateContact(updatedContact);
+            bool result = contactService.UpdateContact(updatedContact);
 
             // Assert
             Assert.True(result);
@@ -89,13 +87,9 @@ namespace Adressbok.Tests.UnitTests
         }
 
         [Fact]
-        public void RemoveContact_Should_RemoveContactById()
+        public void RemoveContactById_Should_ReturnTrueIfCorrectContactRemoved()
         {
             // Arrange
-            var mockFileService = new Mock<IFileService<ContactModel>>();
-            var contacts = new List<ContactModel>();
-            var mockContactService = new ContactService(mockFileService.Object, contacts);
-
             var existingContact = new ContactModel
             {
                 FirstName = "John",
@@ -105,7 +99,7 @@ namespace Adressbok.Tests.UnitTests
             contacts.Add(existingContact);
 
             // Act
-            bool result = mockContactService.RemoveContact(existingContact.Id);
+            bool result = contactService.RemoveContact(existingContact.Id);
 
             // Assert
             Assert.True(result);
@@ -113,13 +107,9 @@ namespace Adressbok.Tests.UnitTests
         }
 
         [Fact]
-        public void RemoveContact_Should_RemoveContactByEmail()
+        public void RemoveContactByEmail_Should_ReturnTrueIfCorrectContactRemoved()
         {
             // Arrange
-            var mockFileService = new Mock<IFileService<ContactModel>>();
-            var contacts = new List<ContactModel>();
-            var mockContactService = new ContactService(mockFileService.Object, contacts);
-
             var existingContact = new ContactModel
             {
                 FirstName = "John",
@@ -129,7 +119,7 @@ namespace Adressbok.Tests.UnitTests
             contacts.Add(existingContact);
 
             // Act
-            bool result = mockContactService.RemoveContact(existingContact.Email);
+            bool result = contactService.RemoveContact(existingContact.Email);
 
             // Assert
             Assert.True(result);

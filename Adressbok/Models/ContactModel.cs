@@ -4,10 +4,10 @@ public class ContactModel
 {
     public ContactModel(Guid id)
     {
-        Id = id != Guid.Empty ? id : Guid.NewGuid();
+        Id = id;
     }
     
-    public ContactModel() : this(Guid.Empty) { }
+    public ContactModel() : this(Guid.NewGuid()) { }
 
     public Guid Id { get; private set; }
     public string FirstName { get; set; }

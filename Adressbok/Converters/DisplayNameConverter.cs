@@ -24,8 +24,8 @@ public class DisplayNameConverter : IValueConverter
         }
         catch { }
 
-        // If contact or firstname + lastname is missing, return "*"
-        return "*";
+        // If contact or firstname + lastname is missing, return "..."
+        return "...";
     }    
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

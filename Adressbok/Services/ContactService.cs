@@ -12,10 +12,11 @@ public class ContactService : IContactService
 
     public ContactService(IFileService<ContactModel> fileService, List<ContactModel> contacts)
     {
-        // Initialize the ContactService with a file service and a collection of contacts
+        // Initialize with a file service and a list of contacts
         _fileService = fileService ?? new FileService<ContactModel>("Adressbok_Kontakter");
         _contacts = contacts ?? new(_fileService.ReadFromFile());
 
+        // Event to save contacts to file when ContactsUpdates is invoked
         ContactsUpdated += SaveContactsToFile;
     }
 
@@ -38,7 +39,8 @@ public class ContactService : IContactService
     {
         try
         {
-            if (contact is null || _contacts.Any(c => c.Email == contact.Email)) return false;
+            if (contact is null || _contacts.Any(c => c.Email == contact.Email)) 
+                return false;
             _contacts.Add(contact);
         }
         catch { return false; }

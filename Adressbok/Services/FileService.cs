@@ -1,4 +1,5 @@
 ﻿using Adressbok.Interfaces;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Adressbok.Services;
@@ -22,11 +23,16 @@ internal class FileService<T> : IFileService<T> where T : class
             {
                 using var sw = new StreamReader(_filePath);
                 var content = sw.ReadToEnd();
-                if (!string.IsNullOrEmpty(content))
-                    return JsonSerializer.Deserialize<IEnumerable<T>>(content)!;
+                if (!string.IsNullOrWhiteSpace(content))
+                {
+                    // Assign deserialized content to 'items' if its of the correct type
+                    // Check if items is null or empty
+                    if (JsonSerializer.Deserialize<IEnumerable<T>>(content) is IEnumerable<T> items && items.Any()) 
+                        return items; // Return deserialized items
+                }
             }
         }
-        catch { }
+        catch (Exception ex) { Debug.WriteLine("Failed to read items from file.\n" + ex.Message); }
 
         return Enumerable.Empty<T>();
     }
@@ -43,6 +49,6 @@ internal class FileService<T> : IFileService<T> where T : class
                 sw.Write(json);
             }
         }
-        catch { }
+        catch (Exception ex) { Debug.WriteLine("Failed to save items to file.\n" + ex.Message); }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Adressbok.Interfaces;
 using Adressbok.Models;
-using Adressbok.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -28,25 +27,21 @@ public partial class ManageContactViewModel : ObservableObject
         emailErrorMessage = "";
     }
 
+    // Constructor for new contact creation
     public ManageContactViewModel(IContactService contactService) : this(null, contactService) { }
 
     [RelayCommand]
     async Task SaveContact()
     {
-        bool result;
-
+        // Only continue if email is valid
         if (!IsValidEmail(Contact.Email))
         {
             EmailErrorMessage = "Invalid Email.";
             return;
         }
 
-        if (_contactId is null)
-            // Add new contact
-            result = _contactService.AddContact(Contact);
-        else
-            // Update existing contact
-            result = _contactService.UpdateContact(Contact);
+        // Add new contact if _contactId is null otherwise update existing contact
+        bool result = _contactId is null ? _contactService.AddContact(Contact) : _contactService.UpdateContact(Contact);
 
         if (result)
             // Go back to MainPage
@@ -55,6 +50,7 @@ public partial class ManageContactViewModel : ObservableObject
             EmailErrorMessage = "Contact with this email already exist.";
     }
 
+    // Return true if email provided is valid
     private bool IsValidEmail(string email)
     {
         if (string.IsNullOrWhiteSpace(email)) return false;

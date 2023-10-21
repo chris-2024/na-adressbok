@@ -25,9 +25,10 @@ public partial class MainViewModel : ObservableObject
     {
         _contactService = contactService;
         ResetMainView();
-        _contactService.ContactsUpdated += ResetMainView;
+        _contactService.ContactsUpdated += ResetMainView; // Call whenever contacts are updated
     }
 
+    // Refresh the main view by updating fields and reloading contacts
     private void ResetMainView()
     {
         Contacts = new(_contactService.GetAllContacts());
@@ -35,6 +36,7 @@ public partial class MainViewModel : ObservableObject
         ContactEmail = "";
     }
 
+    // Command to navigate to the details view for a specific contact
     [RelayCommand]
     public async Task GoToDetails(ContactModel contact)
     {
@@ -43,6 +45,7 @@ public partial class MainViewModel : ObservableObject
         await Shell.Current.Navigation.PushAsync(detailPage);
     }
 
+    // Command to navigate to the view for adding a new contact
     [RelayCommand]
     public async Task GoToAddContact()
     {
@@ -51,6 +54,7 @@ public partial class MainViewModel : ObservableObject
         await Shell.Current.Navigation.PushAsync(manageContactPage);
     }
 
+    // Command to remove a contact by email
     [RelayCommand]
     public void RemoveContactByEmail()
     {

@@ -19,6 +19,7 @@ public partial class DetailsViewModel : ObservableObject
         this.contact = contact;
     }
 
+    // Command to remove this contact
     [RelayCommand]
     public async Task RemoveContact()
     {
@@ -26,6 +27,7 @@ public partial class DetailsViewModel : ObservableObject
         await Return();
     }
 
+    // Command to navigate to the update contact view
     [RelayCommand]
     public async Task GoToUpdateContact()
     {
@@ -34,6 +36,7 @@ public partial class DetailsViewModel : ObservableObject
         await Shell.Current.Navigation.PushAsync(manageContactPage);
     }
 
+    // Command to return to the previous view
     [RelayCommand]
     public async Task Return() => await Shell.Current.GoToAsync("..");
 
