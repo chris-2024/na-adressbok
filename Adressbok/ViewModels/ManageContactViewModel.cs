@@ -50,6 +50,10 @@ public partial class ManageContactViewModel : ObservableObject
             EmailErrorMessage = "Contact with this email already exist.";
     }
 
+    // Command to return to the previous view
+    [RelayCommand]
+    public async Task Return() => await Shell.Current.GoToAsync("..");
+
     // Return true if email provided is valid
     private bool IsValidEmail(string email)
     {

@@ -39,5 +39,4 @@ public partial class DetailsViewModel : ObservableObject
     // Command to return to the previous view
     [RelayCommand]
     public async Task Return() => await Shell.Current.GoToAsync("..");
-
 }

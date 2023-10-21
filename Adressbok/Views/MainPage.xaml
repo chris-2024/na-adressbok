@@ -6,8 +6,11 @@
              x:DataType="{x:Type viewmodels:MainViewModel}"
              x:Class="Adressbok.Views.MainPage">
 
-    <Grid RowDefinitions="auto,*,auto, auto" ColumnDefinitions="1*, 5*, 1*" Padding="20" RowSpacing="5">
-        <Label Grid.Column="1" Text="Contacts" FontSize="18" TextColor="Gray" HorizontalOptions="CenterAndExpand" Margin="5,5,5,10"/>
+    <Grid RowDefinitions="auto,*,auto" ColumnDefinitions="1*, 5*, 1*" Padding="20, 30" RowSpacing="5">
+        <Grid Grid.Column="1" ColumnDefinitions="1*, auto">
+            <Label Grid.ColumnSpan="2" Text="Contacts" FontSize="18" TextColor="Gray" HorizontalOptions="CenterAndExpand" Margin="5,5,5,10"/>
+            <Button Grid.Column="1" ToolTipProperties.Text="New Contact" Command="{Binding GoToAddContactCommand}" FontFamily="FontAwesome" Text="&#xf234;" FontSize="18" BackgroundColor="Transparent" BorderWidth="0" TextColor="Gray" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+        </Grid>
         <CollectionView Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Contacts}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type models:ContactModel}">
@@ -27,12 +30,8 @@
         <Grid x:Name="RemovalSection" Grid.Row="2" Grid.Column="1" RowDefinitions="auto, *" ColumnDefinitions="*, auto">
             <Label Text="{Binding RemoveContactByEmailMessage}" TextColor="Red" FontSize="10" Margin="0" Padding="0" FontAttributes="Italic" />
             <Entry Grid.Row="1" Text="{Binding ContactEmail}" Placeholder="Enter Email to Remove" BackgroundColor="Transparent" />
-            <Button Grid.Row="1" Grid.Column="1" Text="Remove" Command="{Binding RemoveContactByEmailCommand}" BackgroundColor="Transparent" BorderWidth="0" TextColor="Gray" HorizontalOptions="End" />
+            <Button Grid.Row="1" Grid.Column="1" ToolTipProperties.Text="Remove" Command="{Binding RemoveContactByEmailCommand}" FontFamily="FontAwesome" Text="&#xf2ed;" FontSize="18" BackgroundColor="Transparent" BorderWidth="0" TextColor="Gray" HorizontalOptions="EndAndExpand" />
         </Grid>
-
-
-        <Button Grid.Row="3" Grid.Column="1" Text="New Contact" Command="{Binding GoToAddContactCommand}" BackgroundColor="Transparent" BorderWidth="0" Margin="10, 20" TextColor="Gray"/>
-
     </Grid>
 
 </ContentPage>

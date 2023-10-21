@@ -5,8 +5,11 @@
              x:DataType="viewmodels:ManageContactViewModel"
              x:Class="Adressbok.Views.ManageContactPage">
 
-    <Grid RowDefinitions="auto, *, auto" ColumnDefinitions="1*, 5*, 1*" Padding="20" RowSpacing="30">
-        <Label Grid.Column="1" Text="{Binding Contact, Converter={StaticResource DisplayNameConverter}}" TextTransform="Uppercase" FontSize="22" TextColor="Gray" HorizontalOptions="CenterAndExpand"/>
+    <Grid RowDefinitions="auto, *, auto" ColumnDefinitions="1*, 5*, 1*" Padding="20, 30" RowSpacing="30">
+        <Grid Grid.Column="1" ColumnDefinitions="auto, 1*">
+            <Button ToolTipProperties.Text="Return" Command="{Binding ReturnCommand}" FontFamily="FontAwesome" Text="&#xf2ea;" FontSize="18" BackgroundColor="Transparent" BorderWidth="0" TextColor="Gray" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+            <Label Grid.ColumnSpan="2" Text="{Binding Contact, Converter={StaticResource DisplayNameConverter}}" TextTransform="Uppercase" FontSize="22" TextColor="Gray" HorizontalOptions="CenterAndExpand"/>
+        </Grid>
         <StackLayout Grid.Row="1" Grid.Column="1" VerticalOptions="FillAndExpand">
             <Entry Text="{Binding Contact.FirstName}"  Placeholder="FirstName" Margin="0,0,0,20" />
             <Entry Text="{Binding Contact.LastName}" Placeholder="LastName" Margin="0,0,0,8" />

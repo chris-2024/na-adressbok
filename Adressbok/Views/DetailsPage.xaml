@@ -5,8 +5,12 @@
              x:DataType="viewmodels:DetailsViewModel"
              x:Class="Adressbok.Views.DetailsPage">
 
-    <Grid RowDefinitions="auto, 4*, auto" ColumnDefinitions="1*, 5*, 1*" Padding="20" RowSpacing="30">
-        <Label Grid.Column="1" Text="{Binding Contact, Converter={StaticResource DisplayNameConverter}}" TextTransform="Uppercase" FontSize="22" TextColor="Gray" HorizontalOptions="CenterAndExpand"/>
+    <Grid RowDefinitions="auto, 3*, 1*" ColumnDefinitions="1*, 5*, 1*" Padding="20, 30" RowSpacing="30">
+        <Grid Grid.Column="1" ColumnDefinitions="auto, 1*, auto">
+            <Button ToolTipProperties.Text="Return" Command="{Binding ReturnCommand}" FontFamily="FontAwesome" Text="&#xf2ea;" FontSize="18" BackgroundColor="Transparent" BorderWidth="0" TextColor="Gray" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+            <Label Grid.ColumnSpan="3" Text="{Binding Contact, Converter={StaticResource DisplayNameConverter}}" TextTransform="Uppercase" FontSize="22" TextColor="Gray" HorizontalOptions="CenterAndExpand"/>
+            <Button Grid.Column="2" ToolTipProperties.Text="Edit" Command="{Binding GoToUpdateContactCommand}" FontFamily="FontAwesome" Text="&#xf4ff;" FontSize="18" BackgroundColor="Transparent" BorderWidth="0" TextColor="Gray" HorizontalOptions="CenterAndExpand" VerticalOptions="Center"/>
+        </Grid>
         <StackLayout Grid.Row="1" Grid.Column="1" VerticalOptions="FillAndExpand">
             <Label Text="Email" FontSize="14" TextColor="Gray"/>
             <Label Text="{Binding Contact.Email}" FontSize="18" />
@@ -16,13 +20,8 @@
 
             <Label Text="Address" FontSize="14" TextColor="Gray" Margin="0, 20, 0, 0"/>
             <Label Text="{Binding Contact.Address}" FontSize="18" />
-
-            <Button Text="Edit" Command="{Binding GoToUpdateContactCommand}" BackgroundColor="Transparent" BorderWidth="0" Margin="10, 20" TextColor="Gray"/>
         </StackLayout>
-        <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="auto, *, auto" Margin="20, 5">
-            <Button Text="Return" Command="{Binding ReturnCommand}" Margin="10" />
-            <Button Grid.Column="2" Text="Remove" Command="{Binding RemoveContactCommand}" Margin="10" />
-        </Grid>
+        <Button Grid.Row="2" Grid.Column="1" ToolTipProperties.Text="Remove" Command="{Binding RemoveContactCommand}" FontFamily="FontAwesome" Text="&#xf2ed;" FontSize="22" BackgroundColor="Transparent" BorderWidth="0" TextColor="Gray" HorizontalOptions="CenterAndExpand" />
     </Grid>
 
 </ContentPage>

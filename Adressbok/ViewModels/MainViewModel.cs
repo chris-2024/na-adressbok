@@ -24,17 +24,26 @@ public partial class MainViewModel : ObservableObject
     public MainViewModel(ContactService contactService) 
     {
         _contactService = contactService;
-        ResetMainView();
-        _contactService.ContactsUpdated += ResetMainView; // Call whenever contacts are updated
+
+        // Initiate get all contacts
+        GetContacts();
+
+        // Subscribe to contacts being uppdated and reload contacts
+        _contactService.ContactsUpdated += GetContacts;
+
+        // Subscribe to changes to property changed in this MainViewModel
+        this.PropertyChanged += (sender, e) =>
+        {
+            // Update ContactEmail when contacts is changed
+            if (e.PropertyName == nameof(Contacts))
+                ContactEmail = "";
+            // Update message when ContactEmail is changed
+            if (e.PropertyName == nameof(ContactEmail))
+                RemoveContactByEmailMessage = "";
+        };
     }
 
-    // Refresh the main view by updating fields and reloading contacts
-    private void ResetMainView()
-    {
-        Contacts = new(_contactService.GetAllContacts());
-        RemoveContactByEmailMessage = "";
-        ContactEmail = "";
-    }
+    private void GetContacts() => Contacts = new(_contactService.GetAllContacts());
 
     // Command to navigate to the details view for a specific contact
     [RelayCommand]
@@ -43,6 +52,7 @@ public partial class MainViewModel : ObservableObject
         var viewModel = new DetailsViewModel(contact, _contactService);
         var detailPage = new DetailsPage(viewModel);
         await Shell.Current.Navigation.PushAsync(detailPage);
+        ContactEmail = "";
     }
 
     // Command to navigate to the view for adding a new contact
@@ -52,6 +62,7 @@ public partial class MainViewModel : ObservableObject
         var viewModel = new ManageContactViewModel(_contactService);
         var manageContactPage = new ManageContactPage(viewModel);
         await Shell.Current.Navigation.PushAsync(manageContactPage);
+        ContactEmail = "";
     }
 
     // Command to remove a contact by email
