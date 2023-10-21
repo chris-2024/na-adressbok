@@ -4,6 +4,10 @@ using System.Text.Json;
 
 namespace Adressbok.Services;
 
+/// <summary>
+/// Generic JSON file service for internal use.
+/// </summary>
+/// <typeparam name="T">The data type - Reference type</typeparam>
 internal class FileService<T> : IFileService<T> where T : class
 {
     private readonly string _currentDirectory = AppDomain.CurrentDomain.BaseDirectory;

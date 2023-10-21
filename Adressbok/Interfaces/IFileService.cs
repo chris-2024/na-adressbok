@@ -1,7 +1,7 @@
 ﻿namespace Adressbok.Interfaces;
 
 /// <summary>
-/// Defines a generic file service interface for reading and writing collections of objects of type T to and from a file.
+/// Generic file service interface for reading and writing collections of objects of type T to and from a file.
 /// </summary>
 /// <typeparam name="T">The type of objects to be read and written to the file.</typeparam>
 public interface IFileService<T> where T : class
