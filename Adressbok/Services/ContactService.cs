@@ -1,7 +1,5 @@
 ﻿using Adressbok.Interfaces;
 using Adressbok.Models;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 
 namespace Adressbok.Services;
 
@@ -16,8 +14,8 @@ public class ContactService : IContactService
         _fileService = fileService ?? new FileService<ContactModel>("Adressbok_Kontakter");
         _contacts = contacts ?? new(_fileService.ReadFromFile());
 
-        // Event to save contacts to file when ContactsUpdates is invoked
-        ContactsUpdated += SaveContactsToFile;
+        // Event to save contacts to file when ContactsUpdated is invoked
+        ContactsUpdated += () => _fileService.WriteToFile(_contacts.ToList());
     }
 
     // Constructor for creating a ContactService without parameters
@@ -29,9 +27,6 @@ public class ContactService : IContactService
 
     public event Action ContactsUpdated;
 
-    // Event handler for handling changes in the contact collection and saving changes to a file
-    private void SaveContactsToFile() => _fileService.WriteToFile(_contacts.ToList());
-
     // Retrieve all contacts in the collection
     public List<ContactModel> GetAllContacts() => _contacts;
 
@@ -39,6 +34,7 @@ public class ContactService : IContactService
     {
         try
         {
+            contact.Email = contact.Email.ToLower();
             if (contact is null || _contacts.Any(c => c.Email == contact.Email)) 
                 return false;
             _contacts.Add(contact);
@@ -72,7 +68,7 @@ public class ContactService : IContactService
             if (contactOld is null) return false;
 
             // Return false if email is changed and existing contact has the updated email
-            if (contactOld.Email != contactEdit.Email && _contacts.Any(c => c.Email == contactEdit.Email)) return false;
+            if (contactOld.Email != contactEdit.Email.ToLower() && _contacts.Any(c => c.Email == contactEdit.Email.ToLower())) return false;
 
             // Check if the two objects share the same reference
             if (contactEdit != contactOld)
@@ -80,7 +76,7 @@ public class ContactService : IContactService
                 // Update the contact properties with the new values
                 contactOld.FirstName = contactEdit.FirstName;
                 contactOld.LastName = contactEdit.LastName;
-                contactOld.Email = contactEdit.Email;
+                contactOld.Email = contactEdit.Email.ToLower();
                 contactOld.PhoneNumber = contactEdit.PhoneNumber;
                 contactOld.Address = contactEdit.Address;
             }
